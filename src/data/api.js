@@ -47,11 +47,17 @@ export const createManual = async (manual) => {
     body: JSON.stringify(manual)
   });
 
-  if(!response.ok) {
-    return false;
-  }
-
   const data = await response.json();
 
-  return data
+  if(!response.ok) {
+    return {
+      ok: false,
+      data,
+    };
+  }
+
+  return {
+    ok: true,
+    data,
+  }
 }

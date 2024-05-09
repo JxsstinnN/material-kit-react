@@ -9,8 +9,6 @@ import {
   MenuControlsContainer,
 } from 'mui-tiptap';
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
@@ -24,9 +22,13 @@ import FormControl from '@mui/material/FormControl';
 
 import { createManual, getCategories } from 'src/data/api';
 
+import Iconify from 'src/components/iconify/iconify';
+import CustomAlert from 'src/components/alerts/Alert';
+
 export default function CreateManualFormView() {
   const [categories, setCategories] = useState([]);
   const [formValues, setFormValues] = useState({});
+  const [alertData, setAlertData] = useState({ status: '', message: '' });
 
   const rteRef = useRef(null);
 
@@ -47,10 +49,14 @@ export default function CreateManualFormView() {
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    createManual(formValues);
+  const handleSubmit = async (event) => {
+    console.log('ksajdadlkadlk');
+    const result = await createManual(formValues);
+    if (result.ok) {
+      setAlertData({ status: 'success', message: result.message });
+    } else {
+      setAlertData({ status: 'error', message: result.message });
+    }
   };
 
   return (
@@ -59,71 +65,70 @@ export default function CreateManualFormView() {
         <Typography variant="h4">Crear Nuevo Manual</Typography>
       </Stack>
 
-      <Card sx={{ p: 10 }}>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} sx={{ mb: 2, mt: 2 }}>
-            <Grid item xs={12} justifyContent="flex-end">
-              <Box justify-content="flex-end">
-                <Button type="submit" variant="contained">
-                  Registrar
-                </Button>
-              </Box>
-            </Grid>
+      <form onSubmit={handleSubmit} id="manualForm">
+        <Grid container spacing={2}>
+          <Grid item justifyContent='flex-end' alignItems='end'>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              Agregar
+            </Button>
           </Grid>
 
-          <Grid container>
-            <Grid item xs={12} sm={6} xl={12} sx={{ mb: 3 }}>
-              <TextField
-                fullWidth
-                label="Manual"
-                name="manual"
-                value={formValues.manual || ''}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} xl={12} sx={{ mb: 3 }}>
-              <FormControl fullWidth>
-                <InputLabel>Categoría</InputLabel>
-                <Select
-                  name="id_categoria"
-                  value={formValues.id_categoria || ''}
-                  onChange={handleChange}
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category.id_categoria} value={category.id_categoria}>
-                      {category.categoria}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6} xl={12} sx={{ mb: 3 }}>
-              <InputLabel>Contenido del Manual</InputLabel>
-              <RichTextEditor
-                ref={rteRef}
-                onChange={handleChange}
-                name="contenido"
-                onUpdate={(editor) => {
-                  setFormValues({
-                    ...formValues,
-                    contenido: editor.editor.getHTML(),
-                  });
-                }}
-                extensions={[StarterKit]}
-                renderControls={() => (
-                  <MenuControlsContainer>
-                    <MenuSelectHeading />
-                    <MenuDivider />
-                    <MenuButtonBold />
-                    <MenuButtonItalic />
-                  </MenuControlsContainer>
-                )}
-              />
-            </Grid>
+          <Grid item xs={12} sm={12} xl={12}>
+            <TextField
+              fullWidth
+              label="Manual"
+              name="manual"
+              value={formValues.manual || ''}
+              onChange={handleChange}
+            />
           </Grid>
-        </form>
-      </Card>
+          <Grid item xs={12} sm={12} xl={12}>
+            <FormControl fullWidth>
+              <InputLabel>Categoría</InputLabel>
+              <Select
+                name="id_categoria"
+                value={formValues.id_categoria || ''}
+                onChange={handleChange}
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id_categoria} value={category.id_categoria}>
+                    {category.categoria}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12} xl={12}>
+            <InputLabel>Contenido del Manual</InputLabel>
+            <RichTextEditor
+              ref={rteRef}
+              onChange={handleChange}
+              name="contenido"
+              onUpdate={(editor) => {
+                setFormValues({
+                  ...formValues,
+                  contenido: editor.editor.getHTML(),
+                });
+              }}
+              extensions={[StarterKit]}
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                </MenuControlsContainer>
+              )}
+            />
+          </Grid>
+        </Grid>
+      </form>
+
+      <CustomAlert {...alertData} />
     </Container>
   );
 }
