@@ -1,7 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
+import Manual from 'src/pages/manual';
+import CreateManual from 'src/pages/create-manual';
 import DashboardLayout from 'src/layouts/dashboard';
+import CreateManualForm from 'src/pages/create-manual-form';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -27,6 +30,9 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'manual/:id', element: <Manual /> },
+        { path: 'crearmanualdaite', element: <CreateManual /> },
+        { path: 'crearmanualdaite/nuevo', element: <CreateManualForm /> },
       ],
     },
     {
