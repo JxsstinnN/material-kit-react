@@ -1,13 +1,8 @@
 import StarterKit from '@tiptap/starter-kit';
-import React, { useRef, useState, useEffect } from 'react';
 import {
-  MenuDivider,
-  RichTextEditor,
-  MenuButtonBold,
-  MenuButtonItalic,
-  MenuSelectHeading,
-  MenuControlsContainer,
+  RichTextEditor 
 } from 'mui-tiptap';
+import React, { useRef, useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -25,12 +20,20 @@ import { createManual, getCategories } from 'src/data/api';
 import Iconify from 'src/components/iconify/iconify';
 import CustomAlert from 'src/components/alerts/Alert';
 
+import useExtensions from './text-editor/useExtensions';
+import EditorMenuControls from './text-editor/EditorMenuControls';
+
 export default function CreateManualFormView() {
   const [categories, setCategories] = useState([]);
   const [formValues, setFormValues] = useState({});
-  const [alertData, setAlertData] = useState({ status: '', message: '' });
+  const extensions = useExtensions('');
+  const [alertData, setAlertData] = useState({ status: '', message: '', open: false });
 
   const rteRef = useRef(null);
+
+  const handleAlertClose = () => {
+    setAlertData({ ...alertData, open: false });
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -50,12 +53,15 @@ export default function CreateManualFormView() {
   };
 
   const handleSubmit = async (event) => {
-    console.log('ksajdadlkadlk');
+    event.preventDefault();
     const result = await createManual(formValues);
+    const { data } = result;
     if (result.ok) {
-      setAlertData({ status: 'success', message: result.message });
+      setAlertData({ status: 'success', message: data[0][0].mensaje, open: true });
+      console.log(formValues);
+      setFormValues({});
     } else {
-      setAlertData({ status: 'error', message: result.message });
+      setAlertData({ status: 'error', message: data.error, open: true });
     }
   };
 
@@ -65,12 +71,13 @@ export default function CreateManualFormView() {
         <Typography variant="h4">Crear Nuevo Manual</Typography>
       </Stack>
 
-      <form onSubmit={handleSubmit} id="manualForm">
+      <form onSubmit={handleSubmit} id="manualForm" autoComplete="off">
         <Grid container spacing={2}>
-          <Grid item justifyContent='flex-end' alignItems='end'>
+          <Grid item justifyContent="flex-end" alignItems="end">
             <Button
               variant="contained"
               color="success"
+              type="submit"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               Agregar
@@ -114,21 +121,14 @@ export default function CreateManualFormView() {
                   contenido: editor.editor.getHTML(),
                 });
               }}
-              extensions={[StarterKit]}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                </MenuControlsContainer>
-              )}
+              extensions={[...extensions, StarterKit]}
+              renderControls={() => (<EditorMenuControls/> ) }
             />
           </Grid>
         </Grid>
       </form>
 
-      <CustomAlert {...alertData} />
+      <CustomAlert {...alertData} onClose={handleAlertClose} />
     </Container>
   );
 }

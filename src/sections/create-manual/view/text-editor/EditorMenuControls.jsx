@@ -9,23 +9,18 @@ import {
   MenuSelectHeading,
   MenuButtonAddTable,
   MenuButtonEditLink,
-  MenuButtonTaskList,
   MenuButtonUnindent,
   MenuSelectFontSize,
   MenuButtonCodeBlock,
-  MenuButtonSubscript,
   MenuButtonTextColor,
-  MenuButtonUnderline,
   MenuSelectTextAlign,
   MenuButtonBlockquote,
-  // MenuSelectFontFamily,
+  MenuSelectFontFamily,
   MenuButtonImageUpload,
   MenuButtonOrderedList,
-  MenuButtonSuperscript,
   MenuControlsContainer,
   MenuButtonBulletedList,
   MenuButtonStrikethrough,
-  MenuButtonHighlightColor,
   MenuButtonHorizontalRule,
   MenuButtonRemoveFormatting,
 } from "mui-tiptap";
@@ -36,14 +31,14 @@ export default function EditorMenuControls() {
   const theme = useTheme();
   return (
     <MenuControlsContainer>
-      {/* <MenuSelectFontFamily
-        options={[
-          { label: "Comic Sans", value: "Comic Sans MS, Comic Sans" },
-          { label: "Cursive", value: "cursive" },
-          { label: "Monospace", value: "monospace" },
-          { label: "Serif", value: "serif" },
-        ]}
-      /> */}
+       <MenuSelectFontFamily
+          options={[
+            { label: "Comic Sans", value: "Comic Sans MS, Comic Sans" },
+            { label: "Cursive", value: "cursive" },
+            { label: "Monospace", value: "monospace" },
+            { label: "Serif", value: "serif" },
+          ]}
+        /> 
 
       <MenuDivider />
 
@@ -59,13 +54,7 @@ export default function EditorMenuControls() {
 
       <MenuButtonItalic />
 
-      <MenuButtonUnderline />
-
       <MenuButtonStrikethrough />
-
-      <MenuButtonSubscript />
-
-      <MenuButtonSuperscript />
 
       <MenuDivider />
 
@@ -83,18 +72,7 @@ export default function EditorMenuControls() {
         ]}
       />
 
-      <MenuButtonHighlightColor
-        swatchColors={[
-          { value: "#595959", label: "Dark grey" },
-          { value: "#dddddd", label: "Light grey" },
-          { value: "#ffa6a6", label: "Light red" },
-          { value: "#ffd699", label: "Light orange" },
-          { value: "#ffff00", label: "Yellow" },
-          { value: "#99cc99", label: "Light green" },
-          { value: "#90c6ff", label: "Light blue" },
-          { value: "#8085e9", label: "Light purple" },
-        ]}
-      />
+
 
       <MenuDivider />
 
@@ -109,8 +87,6 @@ export default function EditorMenuControls() {
       <MenuButtonOrderedList />
 
       <MenuButtonBulletedList />
-
-      <MenuButtonTaskList />
 
       {/* On touch devices, we'll show indent/unindent buttons, since they're
       unlikely to have a keyboard that will allow for using Tab/Shift+Tab. These

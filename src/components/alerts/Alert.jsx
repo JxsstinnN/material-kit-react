@@ -1,18 +1,16 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-export default function CustomAlert({status,message}) {
-  const [open, setOpen] = useState(false);
+export default function CustomAlert({status,message, open, onClose}) {
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    onClose();
   };
 
   return (
@@ -24,7 +22,7 @@ export default function CustomAlert({status,message}) {
           variant="filled"
           sx={{ width: '100%' }}
         >
-          This is a success Alert inside a Snackbar!
+          {message}
         </Alert>
       </Snackbar>
     </div>
@@ -34,4 +32,6 @@ export default function CustomAlert({status,message}) {
 CustomAlert.propTypes = {
   status: PropTypes.string,
   message: PropTypes.string,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 }

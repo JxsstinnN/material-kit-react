@@ -49,6 +49,7 @@ export const createManual = async (manual) => {
 
   const data = await response.json();
 
+
   if(!response.ok) {
     return {
       ok: false,
