@@ -21,7 +21,7 @@ export const getCategoriesWithPosts = async () => {
     // Añadir el post a la categoría correspondiente
     categoriesWithPosts[categoria].push({ id_manual, manual });
   });
-
+  
   // Convertir el objeto en un array de objetos
   const result = Object.entries(categoriesWithPosts).map(([categoria, posts]) => ({
     categoria,
@@ -31,12 +31,29 @@ export const getCategoriesWithPosts = async () => {
   return result;
 };
 
+export const getManuals = async () => {
+
+  const response = await fetch('http://localhost:5000/manuals');
+  const data = await response.json();
+
+  return data;
+
+};
+
 export const getManualById = async (id) => {
   const response = await fetch(`http://localhost:5000/manual/${id}`);
   const data = await response.json();
 
   return data;
 };
+
+export const getManualDetailsById = async (id) => {
+  const response = await fetch(`http://localhost:5000/manual-details/${id}`);
+  const data = await response.json();
+
+  return data;
+
+}
 
 export const createManual = async (manual) => {
   const response = await fetch('http://localhost:5000/create-manual', {

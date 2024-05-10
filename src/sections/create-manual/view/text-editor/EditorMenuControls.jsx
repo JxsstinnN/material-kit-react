@@ -23,22 +23,30 @@ import {
   MenuButtonStrikethrough,
   MenuButtonHorizontalRule,
   MenuButtonRemoveFormatting,
-} from "mui-tiptap";
+} from 'mui-tiptap';
 
-import { useTheme } from "@mui/material";
+import { useTheme } from '@mui/material';
 
 export default function EditorMenuControls() {
   const theme = useTheme();
+
+  const fileToBase64 = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+    });
+
   return (
     <MenuControlsContainer>
-       <MenuSelectFontFamily
-          options={[
-            { label: "Comic Sans", value: "Comic Sans MS, Comic Sans" },
-            { label: "Cursive", value: "cursive" },
-            { label: "Monospace", value: "monospace" },
-            { label: "Serif", value: "serif" },
-          ]}
-        /> 
+      <MenuSelectFontFamily
+        options={[
+          { label: 'Comic Sans', value: 'Comic Sans MS, Comic Sans' },
+          { label: 'Cursive', value: 'cursive' },
+          { label: 'Monospace', value: 'monospace' },
+          { label: 'Serif', value: 'serif' },
+        ]}
+      />
 
       <MenuDivider />
 
@@ -61,18 +69,16 @@ export default function EditorMenuControls() {
       <MenuButtonTextColor
         defaultTextColor={theme.palette.text.primary}
         swatchColors={[
-          { value: "#000000", label: "Black" },
-          { value: "#ffffff", label: "White" },
-          { value: "#888888", label: "Grey" },
-          { value: "#ff0000", label: "Red" },
-          { value: "#ff9900", label: "Orange" },
-          { value: "#ffff00", label: "Yellow" },
-          { value: "#00d000", label: "Green" },
-          { value: "#0000ff", label: "Blue" },
+          { value: '#000000', label: 'Black' },
+          { value: '#ffffff', label: 'White' },
+          { value: '#888888', label: 'Grey' },
+          { value: '#ff0000', label: 'Red' },
+          { value: '#ff9900', label: 'Orange' },
+          { value: '#ffff00', label: 'Yellow' },
+          { value: '#00d000', label: 'Green' },
+          { value: '#0000ff', label: 'Blue' },
         ]}
       />
-
-
 
       <MenuDivider />
 
@@ -121,10 +127,12 @@ export default function EditorMenuControls() {
           // convert the images to bas64 if you would like to encode the image
           // data directly into the editor content, though that can make the
           // editor content very large.
-          files.map((file) => ({
-            src: URL.createObjectURL(file),
-            alt: file.name,
-          }))
+          Promise.all(
+            files.map(async (file) => ({
+              src: `data:${file.type};base64,${await fileToBase64(file)}`,
+              alt: file.name,
+            }))
+          )
         }
       />
 
@@ -141,6 +149,6 @@ export default function EditorMenuControls() {
       <MenuDivider />
 
       <MenuButtonUndo />
-      </MenuControlsContainer>
-  )};
-     
+    </MenuControlsContainer>
+  );
+}

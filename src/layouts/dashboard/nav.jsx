@@ -199,7 +199,7 @@ function NavItem({ item }) {
               >
                 <ListItemText
                   primary={
-                    <Typography variant="body3">
+                    <Typography variant="subtitle2">
                       {/* Aquí puedes ajustar el tamaño de la fuente */}
                       {manual}
                     </Typography>

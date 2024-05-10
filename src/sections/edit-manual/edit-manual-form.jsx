@@ -20,10 +20,10 @@ import { createManual, getCategories } from 'src/data/api';
 import Iconify from 'src/components/iconify/iconify';
 import CustomAlert from 'src/components/alerts/Alert';
 
-import useExtensions from './text-editor/useExtensions';
-import EditorMenuControls from './text-editor/EditorMenuControls';
+import useExtensions from '../create-manual/view/text-editor/useExtensions';
+import EditorMenuControls from '../create-manual/view/text-editor/EditorMenuControls';
 
-export default function CreateManualFormView() {
+export default function EditManualFormView() {
   const [categories, setCategories] = useState([]);
   const [formValues, setFormValues] = useState({});
   const extensions = useExtensions('');

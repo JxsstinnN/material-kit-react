@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
+import { getManuals } from 'src/data/api';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -26,6 +26,8 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 export default function UserPage() {
   const [page, setPage] = useState(0);
+
+  const [manuals, setManuals] = useState([]);
 
   const [order, setOrder] = useState('asc');
 
@@ -45,9 +47,18 @@ export default function UserPage() {
     }
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await getManuals();
+      setManuals(data);
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = manuals.map((n) => n.manual);
       setSelected(newSelecteds);
       return;
     }
@@ -87,7 +98,7 @@ export default function UserPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: manuals,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -117,17 +128,16 @@ export default function UserPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={manuals.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'name', label: 'ID' },
+                  { id: 'company', label: 'Manual' },
+                  { id: 'role', label: 'Categoria' },
+                  { id: 'visto', label: 'Visto', align: 'right' },
+                  { id: '', label: ''}
                 ]}
               />
               <TableBody>
@@ -135,13 +145,11 @@ export default function UserPage() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <UserTableRow
-                      key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
+                      key={row.id_manual}
+                      id={row.id_manual}
+                      categoria={row.categoria}
+                      manual={row.manual}
+                      visto={row.veces_visto}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                     />
@@ -149,7 +157,7 @@ export default function UserPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, manuals.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -161,7 +169,7 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={manuals.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
