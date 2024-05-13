@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   MenuDivider,
   isTouchDevice,
@@ -27,7 +28,7 @@ import {
 
 import { useTheme } from '@mui/material';
 
-export default function EditorMenuControls() {
+export default function EditorMenuControls({children}) {
   const theme = useTheme();
 
   const fileToBase64 = (file) => new Promise((resolve, reject) => {
@@ -149,6 +150,13 @@ export default function EditorMenuControls() {
       <MenuDivider />
 
       <MenuButtonUndo />
+
+      {children}
+
     </MenuControlsContainer>
   );
 }
+
+EditorMenuControls.propTypes = {
+  children: PropTypes.node,
+};

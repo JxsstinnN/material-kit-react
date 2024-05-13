@@ -1,7 +1,5 @@
+import { RichTextEditor } from 'mui-tiptap';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  RichTextEditor 
-} from 'mui-tiptap';
 import React, { useRef, useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Grid';
@@ -46,7 +44,6 @@ export default function CreateManualFormView() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(formValues)
     setFormValues({
       ...formValues,
       [name]: value,
@@ -60,12 +57,23 @@ export default function CreateManualFormView() {
     if (result.ok) {
       setAlertData({ status: 'success', message: data[0][0].mensaje, open: true });
       setFormValues({});
-      rteRef.current.editor.commands.clearContent()
+      rteRef.current.editor.commands.clearContent();
     } else {
       setAlertData({ status: 'error', message: data.error, open: true });
     }
   };
-  console.log(rteRef)
+
+  const addYoutubeVideo = () => {
+    const url = prompt('Ingrese el Link del video de YT:');
+
+    if (url) {
+      rteRef.current.editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt(640, 10)) || 640,
+        height: Math.max(180, parseInt(480, 10)) || 480,
+      });
+    }
+  };
 
   return (
     <Container>
@@ -117,14 +125,20 @@ export default function CreateManualFormView() {
               ref={rteRef}
               onChange={handleChange}
               name="contenido"
+              extensions={[...extensions, StarterKit]}
+              renderControls={() => (
+                <EditorMenuControls>
+                  <Button variant="button" color="primary" onClick={addYoutubeVideo}>
+                    YT <Iconify icon="eva:video-fill" />
+                  </Button>
+                </EditorMenuControls>
+              )}
               onUpdate={(editor) => {
                 setFormValues({
                   ...formValues,
                   contenido: editor.editor.getHTML(),
                 });
               }}
-              extensions={[...extensions, StarterKit]}
-              renderControls={() => (<EditorMenuControls/> ) }
             />
           </Grid>
         </Grid>

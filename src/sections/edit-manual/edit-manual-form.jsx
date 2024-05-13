@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types';
+import { RichTextEditor } from 'mui-tiptap';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  RichTextEditor 
-} from 'mui-tiptap';
 import React, { useRef, useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Grid';
@@ -23,13 +22,21 @@ import CustomAlert from 'src/components/alerts/Alert';
 import useExtensions from '../create-manual/view/text-editor/useExtensions';
 import EditorMenuControls from '../create-manual/view/text-editor/EditorMenuControls';
 
-export default function EditManualFormView() {
+export default function EditManualFormView({ manual }) {
   const [categories, setCategories] = useState([]);
   const [formValues, setFormValues] = useState({});
   const extensions = useExtensions('');
   const [alertData, setAlertData] = useState({ status: '', message: '', open: false });
 
   const rteRef = useRef(null);
+
+  if(manual) {
+    setFormValues({
+      manual: manual.manual,
+      id_categoria: manual.id_categoria,
+      contenido: manual.contenido,
+    });
+  }
 
   const handleAlertClose = () => {
     setAlertData({ ...alertData, open: false });
@@ -46,7 +53,6 @@ export default function EditManualFormView() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(formValues)
     setFormValues({
       ...formValues,
       [name]: value,
@@ -60,16 +66,30 @@ export default function EditManualFormView() {
     if (result.ok) {
       setAlertData({ status: 'success', message: data[0][0].mensaje, open: true });
       setFormValues({});
-      rteRef.current.editor.setContent('');
+      rteRef.current.editor.commands.clearContent();
     } else {
       setAlertData({ status: 'error', message: data.error, open: true });
     }
   };
 
+  const addYoutubeVideo = () => {
+
+    const url = prompt('Ingrese el Link del video de YT:');
+
+    if(url) {
+      rteRef.current.editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt(640, 10)) || 640,
+        height: Math.max(180, parseInt(480, 10)) || 480,
+      });
+    }
+
+  }
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Crear Nuevo Manual</Typography>
+        <Typography variant="h4">Editar Manual</Typography>
       </Stack>
 
       <form onSubmit={handleSubmit} id="manualForm" autoComplete="off">
@@ -116,14 +136,20 @@ export default function EditManualFormView() {
               ref={rteRef}
               onChange={handleChange}
               name="contenido"
+              extensions={[...extensions, StarterKit]}
+              renderControls={() => (
+                <EditorMenuControls>
+                  <Button variant="button" color="primary" onClick={addYoutubeVideo}>
+                    YT <Iconify icon="eva:video-fill" />
+                  </Button>
+                </EditorMenuControls>
+              )}
               onUpdate={(editor) => {
                 setFormValues({
                   ...formValues,
                   contenido: editor.editor.getHTML(),
                 });
               }}
-              extensions={[...extensions, StarterKit]}
-              renderControls={() => (<EditorMenuControls/> ) }
             />
           </Grid>
         </Grid>
@@ -132,4 +158,8 @@ export default function EditManualFormView() {
       <CustomAlert {...alertData} onClose={handleAlertClose} />
     </Container>
   );
+}
+
+EditManualFormView.propTypes = { 
+  manual: PropTypes.object.isRequired,
 }

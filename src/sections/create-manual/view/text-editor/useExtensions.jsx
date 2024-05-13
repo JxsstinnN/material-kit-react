@@ -1,28 +1,28 @@
-import { useMemo } from "react";
-import { Bold } from "@tiptap/extension-bold";
-import { Link } from "@tiptap/extension-link";
-import { Text } from "@tiptap/extension-text";
-import { Color } from "@tiptap/extension-color";
-import { ListItem } from "@tiptap/extension-list-item";
-import { TableRow } from "@tiptap/extension-table-row";
-import { Dropcursor } from '@tiptap/extension-dropcursor'
-import { TableCell } from "@tiptap/extension-table-cell";
-import { TextAlign } from "@tiptap/extension-text-align";
-import { TextStyle } from "@tiptap/extension-text-style";
-import { Blockquote } from "@tiptap/extension-blockquote";
-import { BulletList } from "@tiptap/extension-bullet-list";
-import { FontFamily } from "@tiptap/extension-font-family";
-import { OrderedList } from "@tiptap/extension-ordered-list";
-import { TableHeader } from "@tiptap/extension-table-header";
-import { HorizontalRule } from "@tiptap/extension-horizontal-rule";
+import { useMemo } from 'react';
+import { Bold } from '@tiptap/extension-bold';
+import { Link } from '@tiptap/extension-link';
+import { Text } from '@tiptap/extension-text';
+import { Color } from '@tiptap/extension-color';
+import Youtube from '@tiptap/extension-youtube';
+import { ListItem } from '@tiptap/extension-list-item';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TextAlign } from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Dropcursor } from '@tiptap/extension-dropcursor';
+import { Blockquote } from '@tiptap/extension-blockquote';
+import { BulletList } from '@tiptap/extension-bullet-list';
+import { FontFamily } from '@tiptap/extension-font-family';
+import { OrderedList } from '@tiptap/extension-ordered-list';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import {
   FontSize,
   TableImproved,
   ResizableImage,
   HeadingWithAnchor,
   LinkBubbleMenuHandler,
-} from "mui-tiptap";
-
+} from 'mui-tiptap';
 
 // Don't treat the end cursor as "inclusive" of the Link mark, so that users can
 // actually "exit" a link if it's the last element in the editor (see
@@ -50,13 +50,13 @@ const CustomLinkExtension = Link.extend({
 // Make subscript and superscript mutually exclusive
 // https://github.com/ueberdosis/tiptap/pull/1436#issuecomment-1031937768
 
-
 /**
  * A hook for providing a default set of useful extensions for the MUI-Tiptap
  * editor.
  */
-export default function useExtensions({placeholder}) {
-  return useMemo(() => [
+export default function useExtensions({ placeholder }) {
+  return useMemo(
+    () => [
       // We incorporate all of the functionality that's part of
       // https://tiptap.dev/api/extensions/starter-kit, plus a few additional
       // extensions, including mui-tiptap's
@@ -94,7 +94,6 @@ export default function useExtensions({placeholder}) {
       Bold,
       Blockquote,
 
-
       CustomLinkExtension.configure({
         // autolink is generally useful for changing text into links if they
         // appear to be URLs (like someone types in literally "example.com"),
@@ -112,19 +111,21 @@ export default function useExtensions({placeholder}) {
       // Extensions
       HeadingWithAnchor,
       TextAlign.configure({
-        types: ["heading", "paragraph", "image"],
+        types: ['heading', 'paragraph', 'image'],
       }),
       TextStyle,
       Color,
       FontFamily,
       FontSize,
       HorizontalRule,
-
+            Youtube.configure({
+        controls: false,
+      }),
       ResizableImage,
       // When images are dragged, we want to show the "drop cursor" for where they'll
       // land
       Dropcursor,
-
-
-    ], []);
+    ],
+    []
+  );
 }

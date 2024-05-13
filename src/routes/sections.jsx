@@ -4,6 +4,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import Manual from 'src/pages/manual';
 import CreateManual from 'src/pages/create-manual';
 import DashboardLayout from 'src/layouts/dashboard';
+import EditManualForm from 'src/pages/edit-manual-form';
 import CreateManualForm from 'src/pages/create-manual-form';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -32,7 +33,7 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         { path: 'manual/:id', element: <Manual /> },
         { path: 'crearmanualdaite', element: <CreateManual /> },
-        { path: 'crearmanualdaite/:id', element: <CreateManualForm />},
+        { path: 'crearmanualdaite/:id', element: <EditManualForm />},
         { path: 'crearmanualdaite/nuevo', element: <CreateManualForm /> },
       ],
     },
