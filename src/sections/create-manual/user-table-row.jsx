@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
@@ -27,7 +28,7 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
-
+  
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -59,10 +60,13 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
+
+        <Link to={`/crearmanualdaite/${id}`}>        
         <MenuItem onClick={handleCloseMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Editar
         </MenuItem>
+        </Link>
 
       </Popover>
     </>
@@ -71,8 +75,8 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   id: PropTypes.any,
-  selected: PropTypes.bool,
-  manual: PropTypes.func,
+  selected: PropTypes.any,
+  manual: PropTypes.any,
   categoria: PropTypes.any,
   visto: PropTypes.any,
 };

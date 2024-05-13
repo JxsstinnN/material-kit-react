@@ -60,11 +60,12 @@ export default function CreateManualFormView() {
     if (result.ok) {
       setAlertData({ status: 'success', message: data[0][0].mensaje, open: true });
       setFormValues({});
-      rteRef.current.editor.setContent('');
+      rteRef.current.editor.commands.clearContent()
     } else {
       setAlertData({ status: 'error', message: data.error, open: true });
     }
   };
+  console.log(rteRef)
 
   return (
     <Container>

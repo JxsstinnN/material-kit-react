@@ -32,6 +32,7 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         { path: 'manual/:id', element: <Manual /> },
         { path: 'crearmanualdaite', element: <CreateManual /> },
+        { path: 'crearmanualdaite/:id', element: <CreateManualForm />},
         { path: 'crearmanualdaite/nuevo', element: <CreateManualForm /> },
       ],
     },

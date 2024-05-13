@@ -34,7 +34,6 @@ export default function Manual() {
   }, [id]);
 
   const manualContent = manual ? manual[0]?.contenido : null;
-
   return (
     <>
       <Helmet>

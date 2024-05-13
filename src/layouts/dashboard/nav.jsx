@@ -29,6 +29,7 @@ import { NAV } from './config-layout';
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+
   const [categoriesWithPosts, setCategories] = useState([]);
 
   const upLg = useResponsive('up', 'lg');
@@ -94,6 +95,7 @@ export default function Nav({ openNav, onCloseNav }) {
           height: 1,
           display: 'flex',
           flexDirection: 'column',
+          bgcolor: 'primary.contrastText'
         },
       }}
     >
@@ -163,8 +165,8 @@ function NavItem({ item }) {
           minHeight: 44,
           borderRadius: 0.75,
           typography: 'body2',
-          color: 'text.secondary',
-          textTransform: 'capitalize',
+          color: 'text.primary',
+          textTransform: 'uppercase',
           fontWeight: 'fontWeightMedium',
         }}
         onClick={handleClick}
@@ -175,8 +177,8 @@ function NavItem({ item }) {
 
         <Box component="span">{item.categoria} </Box>
 
-        <Box component="span" justifyContent='flex-end' sx={{ width: 24, height: 24, mr: 2 }}>
-          {item.posts && <>{open ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />}</>}
+        <Box component="span" alignItems='end' justifyContent='flex-end' sx={{ width: 24, height: 24, mr: 2 }}>
+          {item.posts && <> {open ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />} </>}
         </Box>
       </ListItemButton>
       {item.posts && (
@@ -191,8 +193,8 @@ function NavItem({ item }) {
                   pl: 4,
                   minHeight: 44,
                   borderRadius: 0.75,
-                  typography: 'body2',
-                  color: 'text.secondary',
+                  typography: 'subtitle',
+                  // color: 'text.secondary',
                   textTransform: 'capitalize',
                   fontWeight: 'fontWeightMedium',
                 }}
@@ -200,7 +202,6 @@ function NavItem({ item }) {
                 <ListItemText
                   primary={
                     <Typography variant="subtitle2">
-                      {/* Aquí puedes ajustar el tamaño de la fuente */}
                       {manual}
                     </Typography>
                   }

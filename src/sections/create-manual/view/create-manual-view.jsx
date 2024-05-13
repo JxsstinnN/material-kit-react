@@ -104,7 +104,6 @@ export default function UserPage() {
   });
 
   const notFound = !dataFiltered.length && !!filterName;
-
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -133,7 +132,7 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'ID' },
+                  { id: 'name', label: 'ID', align: 'center' },
                   { id: 'company', label: 'Manual' },
                   { id: 'role', label: 'Categoria' },
                   { id: 'visto', label: 'Visto', align: 'right' },
