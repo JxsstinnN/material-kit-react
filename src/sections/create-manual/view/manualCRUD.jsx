@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
@@ -24,7 +25,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function ManualCRUD() {
   const [page, setPage] = useState(0);
 
   const [manuals, setManuals] = useState([]);
@@ -109,9 +110,12 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Manuales</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          Nuevo
-        </Button>
+        <Link to='/crearmanualdaite/nuevo'>
+          <Button variant="contained" color="success" startIcon={<Iconify icon="eva:plus-fill" />}>
+            Nuevo
+          </Button>
+        </Link>
+
       </Stack>
 
       <Card>
@@ -146,7 +150,7 @@ export default function UserPage() {
                     <UserTableRow
                       key={row.id_manual}
                       id={row.id_manual}
-                      categoria={row.categoria}
+                      modulo={row.modulo}
                       manual={row.manual}
                       visto={row.veces_visto}
                       selected={selected.indexOf(row.name) !== -1}

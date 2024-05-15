@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { CreateManualView } from 'src/sections/create-manual/view/';
+import ManualCRUD from 'src/sections/create-manual/view/manualCRUD';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function CreateManual() {
         <title> User | Minimal UI </title>
       </Helmet>
 
-      <CreateManualView />
+     <ManualCRUD />
     </>
   );
 }

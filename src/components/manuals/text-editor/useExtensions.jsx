@@ -4,6 +4,9 @@ import { Link } from '@tiptap/extension-link';
 import { Text } from '@tiptap/extension-text';
 import { Color } from '@tiptap/extension-color';
 import Youtube from '@tiptap/extension-youtube';
+import { History } from '@tiptap/extension-history';
+import Paragraph from '@tiptap/extension-paragraph';
+import { Document } from '@tiptap/extension-document';
 import { ListItem } from '@tiptap/extension-list-item';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
@@ -23,6 +26,9 @@ import {
   HeadingWithAnchor,
   LinkBubbleMenuHandler,
 } from 'mui-tiptap';
+
+import { Video } from './extensions/video';
+
 
 // Don't treat the end cursor as "inclusive" of the Link mark, so that users can
 // actually "exit" a link if it's the last element in the editor (see
@@ -46,9 +52,6 @@ import {
 const CustomLinkExtension = Link.extend({
   inclusive: false,
 });
-
-// Make subscript and superscript mutually exclusive
-// https://github.com/ueberdosis/tiptap/pull/1436#issuecomment-1031937768
 
 /**
  * A hook for providing a default set of useful extensions for the MUI-Tiptap
@@ -78,6 +81,8 @@ export default function useExtensions({ placeholder }) {
       TableRow,
       TableHeader,
       TableCell,
+      Paragraph,
+      History,
 
       BulletList,
       Document,
@@ -106,6 +111,7 @@ export default function useExtensions({ placeholder }) {
         linkOnPaste: true,
         openOnClick: false,
       }),
+
       LinkBubbleMenuHandler,
 
       // Extensions
@@ -118,7 +124,8 @@ export default function useExtensions({ placeholder }) {
       FontFamily,
       FontSize,
       HorizontalRule,
-            Youtube.configure({
+      Video,
+      Youtube.configure({
         controls: false,
       }),
       ResizableImage,

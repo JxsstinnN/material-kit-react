@@ -5,31 +5,38 @@ export const getCategories = async () => {
   return data;
 };
 
-export const getCategoriesWithPosts = async () => {
+export const getModulesWithManuals = async () => {
   const response = await fetch('http://localhost:5000/posts');
   const data = await response.json();
 
-  // Objeto para almacenar las categorías con sus respectivos posts
-  const categoriesWithPosts = {};
+  const modulesWithManuals = {};
 
-  // Iterar sobre los datos y agruparlos por categoría
-  data.forEach(({ id_categoria, categoria, id_manual, manual }) => {
-    // Verificar si la categoría ya existe en el objeto
-    if (!categoriesWithPosts[categoria]) {
-      categoriesWithPosts[categoria] = [];
+  data.forEach(({ id_modulo, modulo, operacion, id_manual, manual }) => {
+    modulo = modulo.trim();
+
+    if (!modulesWithManuals[modulo]) {
+      modulesWithManuals[modulo] = [];
     }
-    // Añadir el post a la categoría correspondiente
-    categoriesWithPosts[categoria].push({ id_manual, manual });
+
+    const existingOperation = modulesWithManuals[modulo].find(op => op.operacion === operacion);
+    if (!existingOperation) {
+      modulesWithManuals[modulo].push({
+        operacion,
+        posts: [{ id_manual, manual }]
+      });
+    } else {
+      existingOperation.posts.push({ id_manual, manual });
+    }
   });
 
-  // Convertir el objeto en un array de objetos
-  const result = Object.entries(categoriesWithPosts).map(([categoria, posts]) => ({
-    categoria,
-    posts,
+  const result = Object.entries(modulesWithManuals).map(([modulo, operations]) => ({
+    modulo,
+    operations
   }));
 
   return result;
 };
+
 
 export const getManuals = async () => {
   const response = await fetch('http://localhost:5000/manuals');
@@ -51,6 +58,13 @@ export const getManualDetailsById = async (id) => {
 
   return data;
 };
+
+export const getOperations = async (id) => {
+  const response = await fetch(`http://localhost:5000/operations`);
+  const data = await response.json();
+
+  return data;
+}
 
 export const createManual = async (manual) => {
   const response = await fetch('http://localhost:5000/create-manual', {

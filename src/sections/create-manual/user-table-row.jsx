@@ -16,7 +16,7 @@ export default function UserTableRow({
   selected,
   id,
   manual,
-  categoria,
+  modulo,
   visto,
 }) {
   const [open, setOpen] = useState(null);
@@ -39,7 +39,7 @@ export default function UserTableRow({
 
         <TableCell>{manual}</TableCell>
 
-        <TableCell>{categoria}</TableCell>
+        <TableCell>{modulo}</TableCell>
 
         <TableCell align="right">{visto}</TableCell>
 
@@ -77,6 +77,6 @@ UserTableRow.propTypes = {
   id: PropTypes.any,
   selected: PropTypes.any,
   manual: PropTypes.any,
-  categoria: PropTypes.any,
+  modulo: PropTypes.any,
   visto: PropTypes.any,
 };

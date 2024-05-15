@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import CreateManualFormView from 'src/sections/create-manual/view/create-manual-form';
+import ManualForm from 'src/components/manuals/ManualForm';
 
 
 // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ export default function CreateManualForm() {
         <title> Daite | Crear Manuales </title>
       </Helmet>
 
-      <CreateManualFormView />
+      <ManualForm />
     </>
   );
 }

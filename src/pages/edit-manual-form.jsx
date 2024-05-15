@@ -4,21 +4,22 @@ import { useParams } from 'react-router-dom';
 
 import { getManualDetailsById } from 'src/data/api';
 
-import EditManualFormView from 'src/sections/edit-manual/edit-manual-form';
+import ManualForm from 'src/components/manuals/ManualForm';
 
 // ----------------------------------------------------------------------
 
 export default function EditManualForm() {
+
   const { id } = useParams();
 
   const [manual, setManual] = useState(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+
     const fetchManual = async () => {
       try {
-        const manualData = await getManualDetailsById(id);
-        const manualId = manualData ? manualData[0]?.id_manual : null;
+        const [manualData] = await getManualDetailsById(id);
+        const manualId = manualData ? manualData.id_manual : null;
 
         // Verificar si el manual ha cambiado
         if (manualId !== id) {
@@ -30,6 +31,8 @@ export default function EditManualForm() {
     };
 
     fetchManual();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
@@ -38,7 +41,8 @@ export default function EditManualForm() {
         <title> Daite | Editar Manuales </title>
       </Helmet>
 
-      <EditManualFormView manual={manual} />
+      { manual && <ManualForm manual={manual} /> }
+
     </>
   );
 }

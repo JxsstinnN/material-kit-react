@@ -60,12 +60,12 @@ export default function Searchbar() {
         )}
 
         <Slide direction="down" in={open} mountOnEnter unmountOnExit>
-          <StyledSearchbar>
+          <StyledSearchbar >
             <Input
               autoFocus
               fullWidth
               disableUnderline
-              placeholder="Search…"
+              placeholder="Buscar..."
               startAdornment={
                 <InputAdornment position="start">
                   <Iconify

@@ -3,16 +3,13 @@ import {
   MenuDivider,
   isTouchDevice,
   MenuButtonBold,
-  MenuButtonCode,
   MenuButtonUndo,
   MenuButtonIndent,
-  MenuButtonItalic,
   MenuSelectHeading,
   MenuButtonAddTable,
   MenuButtonEditLink,
   MenuButtonUnindent,
   MenuSelectFontSize,
-  MenuButtonCodeBlock,
   MenuButtonTextColor,
   MenuSelectTextAlign,
   MenuButtonBlockquote,
@@ -21,7 +18,6 @@ import {
   MenuButtonOrderedList,
   MenuControlsContainer,
   MenuButtonBulletedList,
-  MenuButtonStrikethrough,
   MenuButtonHorizontalRule,
   MenuButtonRemoveFormatting,
 } from 'mui-tiptap';
@@ -61,9 +57,9 @@ export default function EditorMenuControls({children}) {
 
       <MenuButtonBold />
 
-      <MenuButtonItalic />
+      {/* <MenuButtonItalic /> */}
 
-      <MenuButtonStrikethrough />
+      {/* <MenuButtonStrikethrough /> */}
 
       <MenuDivider />
 
@@ -113,9 +109,9 @@ export default function EditorMenuControls({children}) {
 
       <MenuDivider />
 
-      <MenuButtonCode />
+      {/* <MenuButtonCode />
 
-      <MenuButtonCodeBlock />
+      <MenuButtonCodeBlock /> */}
 
       <MenuDivider />
 

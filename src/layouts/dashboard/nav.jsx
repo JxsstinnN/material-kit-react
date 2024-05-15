@@ -18,7 +18,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { getCategoriesWithPosts } from 'src/data/api';
+import { getModulesWithManuals } from 'src/data/api';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -30,7 +30,7 @@ import { NAV } from './config-layout';
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
-  const [categoriesWithPosts, setCategories] = useState([]);
+  const [modulesWithManuals, setCategories] = useState([]);
 
   const upLg = useResponsive('up', 'lg');
 
@@ -43,7 +43,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const data = await getCategoriesWithPosts();
+      const data = await getModulesWithManuals();
       setCategories(data);
     };
 
@@ -52,7 +52,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {categoriesWithPosts.map((item, index) => (
+      {modulesWithManuals.map((item, index) => (
         <NavItem key={index} item={item} />
       ))}
     </Stack>
@@ -95,8 +95,9 @@ export default function Nav({ openNav, onCloseNav }) {
           height: 1,
           display: 'flex',
           flexDirection: 'column',
-          bgcolor: 'primary.contrastText'
+          flexGrow: 1,
         },
+        flexGrow: 1,
       }}
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
@@ -120,6 +121,7 @@ export default function Nav({ openNav, onCloseNav }) {
             height: 1,
             position: 'fixed',
             width: NAV.WIDTH,
+            bgcolor: 'primary.main',
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
@@ -132,6 +134,7 @@ export default function Nav({ openNav, onCloseNav }) {
           PaperProps={{
             sx: {
               width: NAV.WIDTH,
+              bgcolor: 'primary.main',
             },
           }}
         >
@@ -150,66 +153,101 @@ Nav.propTypes = {
 // ----------------------------------------------------------------------
 
 function NavItem({ item }) {
-  const [open, setOpen] = useState(false);
+  const [openModule, setOpenModule] = useState(false);
+  const [openOperations, setOpenOperations] = useState({});
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleModuleClick = () => {
+    setOpenModule(!openModule);
+  };
+
+  const handleOperationClick = (index) => {
+    setOpenOperations({ ...openOperations, [index]: !openOperations[index] });
   };
 
   return (
     <>
       <ListItemButton
-        component={RouterLink}
-        to={item.path}
         sx={{
           minHeight: 44,
           borderRadius: 0.75,
           typography: 'body2',
-          color: 'text.primary',
-          textTransform: 'uppercase',
-          fontWeight: 'fontWeightMedium',
+          color: 'text.white',
+          textTransform: 'capitalize',
+          fontWeight: 'bold',
         }}
-        onClick={handleClick}
+        onClick={handleModuleClick}
       >
-        {/* <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
-          {item?.icon}
-        </Box> */}
+        <ListItemText component="span">
+          {item.modulo}
+        </ListItemText>
 
-        <Box component="span">{item.categoria} </Box>
-
-        <Box component="span" alignItems='end' justifyContent='flex-end' sx={{ width: 24, height: 24, mr: 2 }}>
-          {item.posts && <> {open ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />} </>}
+        <Box
+          component="span"
+          alignItems="end"
+          justifyContent="flex-end"
+          sx={{ width: 24, height: 24, mr: 2 }}
+        >
+          {item.operations && <> {openModule ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />} </>}
         </Box>
       </ListItemButton>
-      {item.posts && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {item.posts.map(({ id_manual, manual }) => (
-              <ListItemButton
-                key={id_manual}
-                component={RouterLink}
-                to={`/manual/${id_manual}`}
-                sx={{
-                  pl: 4,
-                  minHeight: 44,
-                  borderRadius: 0.75,
-                  typography: 'subtitle',
-                  // color: 'text.secondary',
-                  textTransform: 'capitalize',
-                  fontWeight: 'fontWeightMedium',
-                }}
-              >
-                <ListItemText
-                  primary={
-                    <Typography variant="subtitle2">
-                      {manual}
-                    </Typography>
-                  }
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </Collapse>
+      {item.operations && (
+        <>
+          {item.operations.map((operation, index) => (
+            <Collapse key={index} in={openModule} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{
+                    pl: 4,
+                    minHeight: 44,
+                    borderRadius: 0.75,
+                    typography: 'subtitle',
+                    fontWeight: 'light',
+                    textTransform: 'capitalize',
+                    color: 'text.white',
+                    
+                  }}
+                  onClick={() => handleOperationClick(index)}
+                >
+                  <ListItemText
+                    primary={<Typography variant="subtitle2">{operation.operacion}</Typography>}
+                  />
+                  <Box
+                    component="span"
+                    alignItems="end"
+                    justifyContent="flex-end"
+                    sx={{ width: 24, height: 24, mr: 2 }}
+                  >
+                    {openOperations[index] ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />}
+                  </Box>
+                </ListItemButton>
+                <Collapse in={openOperations[index]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {operation.posts.map(({ id_manual, manual }) => (
+                      <ListItemButton
+                        key={id_manual}
+                        component={RouterLink}
+                        to={`/manual/${id_manual}`}
+                        sx={{
+                          pl: 6,
+                          minHeight: 44,
+                          borderRadius: 0.75,
+                          typography: 'subtitle',
+                          color: 'text.white',
+                          textTransform: 'capitalize',
+                          fontWeight: 'fontWeightLight',
+                        }}
+                      >
+                        <ListItemText
+                          primary={<Typography variant="subtitle2">{manual}</Typography>}
+                        />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </List>
+            </Collapse>
+          ))}
+        </>
       )}
     </>
   );
