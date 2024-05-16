@@ -24,6 +24,7 @@ import { getModulesWithManuals } from 'src/data/api';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
+import SearchModal from 'src/components/modal-search/SearchModal';
 
 import { NAV } from './config-layout';
 
@@ -103,6 +104,8 @@ export default function Nav({ openNav, onCloseNav }) {
       }}
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
+
+      <SearchModal />
 
       {renderMenu}
 
@@ -258,3 +261,5 @@ function NavItem({ item }) {
 NavItem.propTypes = {
   item: PropTypes.object,
 };
+
+// ----------------------------------------------------------------------
