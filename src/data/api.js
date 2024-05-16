@@ -52,6 +52,16 @@ export const getManualById = async (id) => {
   return data;
 };
 
+export const getManualByName = async (id) => {
+
+  id = id.replace(/-/g, ' ');
+
+  const response = await fetch(`http://localhost:5000/manual/${id}`);
+  const data = await response.json();
+
+  return data;
+};
+
 export const getManualDetailsById = async (id) => {
   const response = await fetch(`http://localhost:5000/manual-detail/${id}`);
   const data = await response.json();

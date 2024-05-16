@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { getManualById } from 'src/data/api';
+import { getManualByName } from 'src/data/api';
 
 import ManualView from 'src/sections/manual/manual-view';
 
@@ -17,7 +17,7 @@ export default function Manual() {
   useEffect(() => {
     const fetchManual = async () => {
       try {
-        const manualData = await getManualById(id);
+        const manualData = await getManualByName(id);
         const manualId = manualData ? manualData[0]?.id_detalle_manual : null;
         console.log(manualId);
   

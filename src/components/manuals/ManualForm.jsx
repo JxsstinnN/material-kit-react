@@ -195,7 +195,6 @@ const ManualForm = ({ manual }) => {
             <RichTextEditor
               ref={rteRef}
               name="contenido"
-              content={() => formValues.contenido || '1'}
               extensions={[...extensions]}
               onUpdate={handleContentUpdate}
               renderControls={() => (

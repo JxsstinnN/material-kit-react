@@ -18,6 +18,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { replaceSpaces } from 'src/utils/replace-spaces';
+
 import { getModulesWithManuals } from 'src/data/api';
 
 import Logo from 'src/components/logo';
@@ -226,7 +228,7 @@ function NavItem({ item }) {
                       <ListItemButton
                         key={id_manual}
                         component={RouterLink}
-                        to={`/manual/${id_manual}`}
+                        to={`/manual/${replaceSpaces(manual)}`}
                         sx={{
                           pl: 6,
                           minHeight: 44,
